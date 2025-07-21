@@ -1,0 +1,30 @@
+# main.py
+from timer import StudyTimer
+from quiz_generator import QuizGenerator
+from marketplace import Marketplace, StudyPlan
+import config
+
+class StudyBuddy:
+    def __init__(self):
+        self.timer = StudyTimer()
+        self.quiz_maker = QuizGenerator(config.OPENAI_KEY)
+        self.marketplace = Marketplace()
+        
+    def run_pomodoro(self, work_mins=25, break_mins=5):
+        print(f"Starting work session ({work_mins} minutes)")
+        self.timer.start_session(work_mins * 60, "work")
+        time.sleep(work_mins * 60)
+        self.timer.end_session()
+        
+        print(f"Starting break ({break_mins} minutes)")
+        self.timer.start_session(break_mins * 60, "break")
+        time.sleep(break_mins * 60)
+        self.timer.end_session()
+        
+    def generate_quiz(self, topic):
+        return self.quiz_maker.generate_quiz(topic)
+        
+    def browse_plans(self, course_code):
+        return self.marketplace.get_plans(course_code)
+
+        

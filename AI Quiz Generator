@@ -1,0 +1,35 @@
+# quiz_generator.py
+import openai
+import json
+
+class QuizGenerator:
+    def __init__(self, api_key):
+        openai.api_key = api_key
+        
+    def generate_quiz(self, topic, difficulty="medium"):
+        prompt = f"""
+        Create a 5-question {difficulty} quiz about {topic} with:
+        - Multiple choice questions
+        - Clear correct answers
+        - Brief explanations
+        
+        Format as JSON with:
+        {{
+            "quiz_title": string,
+            "questions": [
+                {{
+                    "question": string,
+                    "options": list,
+                    "answer": string,
+                    "explanation": string
+                }}
+            ]
+        }}
+        """
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        
+        return json.loads(response.choices[0].message.content)
