@@ -1,0 +1,14 @@
+# Updated Development Roadmap
+
+## Sprint 2 Progress
+✅ Completed:
+- Basic Pomodoro timer implementation
+- Github Repository setup
+
+🔧 In Progress:
+- OpenAI API integration (80% complete)
+- Study plan database schema
+
+## New Tasks Identified
+- [ ] Add timer pause functionality
+- [ ] Implement quiz saving feature

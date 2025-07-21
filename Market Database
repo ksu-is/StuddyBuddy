@@ -1,0 +1,43 @@
+# marketplace.py
+import sqlite3
+from dataclasses import dataclass
+
+@dataclass
+class StudyPlan:
+    course_code: str
+    title: str
+    author: str
+    rating: float
+    content: str
+
+class Marketplace:
+    def __init__(self, db_path="studybuddy.db"):
+        self.conn = sqlite3.connect(db_path)
+        self._create_tables()
+        
+    def _create_tables(self):
+        self.conn.execute("""
+        CREATE TABLE IF NOT EXISTS plans (
+            id INTEGER PRIMARY KEY,
+            course_code TEXT,
+            title TEXT,
+            author TEXT,
+            rating REAL,
+            content TEXT
+        )""")
+        
+    def add_plan(self, plan):
+        self.conn.execute("""
+        INSERT INTO plans (course_code, title, author, rating, content)
+        VALUES (?, ?, ?, ?, ?)
+        """, (plan.course_code, plan.title, plan.author, plan.rating, plan.content))
+        self.conn.commit()
+        
+    def get_plans(self, course_code=None):
+        cursor = self.conn.cursor()
+        if course_code:
+            cursor.execute("SELECT * FROM plans WHERE course_code = ?", (course_code,))
+        else:
+            cursor.execute("SELECT * FROM plans")
+        return cursor.fetchall()
+        

@@ -1,0 +1,39 @@
+# timer.py
+import time
+from datetime import datetime
+import matplotlib.pyplot as plt
+
+class StudyTimer:
+    def __init__(self):
+        self.sessions = []
+        self.current_session = None
+        
+    def start_session(self, duration, session_type="work"):
+        self.current_session = {
+            "start": datetime.now(),
+            "type": session_type,
+            "duration": duration
+        }
+        
+    def end_session(self):
+        if self.current_session:
+            self.current_session["end"] = datetime.now()
+            self.sessions.append(self.current_session)
+            self.current_session = None
+            
+    def get_analytics(self):
+        work_time = sum(
+            s["duration"] for s in self.sessions 
+            if s["type"] == "work"
+        )
+        break_time = sum(
+            s["duration"] for s in self.sessions 
+            if s["type"] == "break"
+        )
+        
+        plt.figure(figsize=(10, 5))
+        plt.bar(["Work", "Break"], [work_time/60, break_time/60])
+        plt.ylabel("Minutes")
+        plt.title("Study Time Distribution")
+        plt.savefig("analytics.png")
+        return "analytics.png"
